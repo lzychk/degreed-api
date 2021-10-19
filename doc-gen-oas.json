@@ -4,6 +4,11 @@
     "title": "Degreed.Api.Web",
     "version": "1.0"
   },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
   "paths": {
     "/api/v2/accomplishments": {
       "get": {
@@ -14,6 +19,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -51,7 +59,7 @@
         }
       }
     },
-    "/api/v2/accomplishments/{Id}": {
+    "/api/v2/accomplishments/{id}": {
       "get": {
         "tags": [
           "Accomplishment"
@@ -61,6 +69,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -78,10 +88,8 @@
             }
           }
         }
-      }
-    },
-    "/api/v2/accomplishments/{id}": {
-      "patch": {
+      },
+      "delete": {
         "tags": [
           "Accomplishment"
         ],
@@ -90,13 +98,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -108,7 +118,7 @@
           }
         }
       },
-      "delete": {
+      "patch": {
         "tags": [
           "Accomplishment"
         ],
@@ -117,13 +127,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -145,6 +157,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -192,33 +207,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Bundle"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Bundle"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -246,6 +236,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -253,6 +245,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bundle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Bundle"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -274,6 +295,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -283,6 +307,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -312,33 +338,8 @@
             "name": "bundleId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Bundle"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Bundle"
-        ],
-        "parameters": [
-          {
-            "name": "bundleId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -366,6 +367,37 @@
             "name": "bundleId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bundle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Bundle"
+        ],
+        "parameters": [
+          {
+            "name": "bundleId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -394,6 +426,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -424,6 +459,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -452,6 +489,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -489,7 +529,7 @@
         }
       }
     },
-    "/api/v2/certificates/{Id}": {
+    "/api/v2/certificates/{id}": {
       "get": {
         "tags": [
           "Certificate"
@@ -499,35 +539,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedCertificate"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/certificates/{id}": {
-      "patch": {
-        "tags": [
-          "Certificate"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -555,6 +568,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -572,6 +587,35 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Certificate"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedCertificate"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/completions": {
@@ -583,6 +627,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -630,6 +677,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -648,7 +697,7 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "Completion"
         ],
@@ -657,13 +706,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -675,7 +726,7 @@
           }
         }
       },
-      "delete": {
+      "patch": {
         "tags": [
           "Completion"
         ],
@@ -684,13 +735,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -712,6 +765,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -742,6 +798,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -770,6 +828,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -817,33 +878,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -871,6 +907,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -878,6 +916,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -899,6 +966,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -946,33 +1016,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Article"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1000,6 +1045,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1007,6 +1054,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1028,6 +1104,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1075,33 +1154,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Video"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1129,6 +1183,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1136,6 +1192,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1157,6 +1242,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1204,33 +1292,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Event"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1258,6 +1321,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1265,6 +1330,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1286,6 +1380,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1333,33 +1430,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Course"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1387,6 +1459,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1394,6 +1468,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Course"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1415,6 +1518,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1462,33 +1568,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Podcast"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1516,6 +1597,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1523,6 +1606,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Podcast"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1544,6 +1656,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1591,33 +1706,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Assessment"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1645,6 +1735,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1652,6 +1744,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assessment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -1674,6 +1795,8 @@
             "name": "contentId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1681,6 +1804,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1711,33 +1837,8 @@
             "name": "contentId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedContent"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Content"
-        ],
-        "parameters": [
-          {
-            "name": "contentId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1765,6 +1866,37 @@
             "name": "contentId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedContent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Content"
+        ],
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1794,6 +1926,8 @@
             "name": "contentId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1801,6 +1935,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1831,6 +1968,8 @@
             "name": "contentId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -1851,16 +1990,6 @@
       }
     },
     "/xAPI/statements": {
-      "post": {
-        "tags": [
-          "ExperienceApi"
-        ],
-        "responses": {
-          "201": {
-            "description": "Success"
-          }
-        }
-      },
       "get": {
         "tags": [
           "ExperienceApi"
@@ -1869,6 +1998,9 @@
           {
             "name": "statementId",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -1877,6 +2009,9 @@
           {
             "name": "next",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -1884,6 +2019,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32",
@@ -1893,6 +2031,9 @@
           {
             "name": "since",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -1901,6 +2042,9 @@
           {
             "name": "until",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -1909,6 +2053,9 @@
           {
             "name": "ascending",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "boolean",
               "default": false
@@ -1917,6 +2064,9 @@
           {
             "name": "verb",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -1924,6 +2074,9 @@
           {
             "name": "agent",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -1931,6 +2084,16 @@
         ],
         "responses": {
           "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ExperienceApi"
+        ],
+        "responses": {
+          "201": {
             "description": "Success"
           }
         }
@@ -1945,6 +2108,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1992,33 +2158,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedGroup"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Group"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2046,6 +2187,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2053,6 +2196,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedGroup"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Group"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -2074,6 +2246,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2083,6 +2258,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2111,6 +2288,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2120,6 +2300,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2149,29 +2331,8 @@
             "name": "groupId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Group"
-        ],
-        "parameters": [
-          {
-            "name": "groupId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2195,6 +2356,33 @@
             "name": "groupId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Group"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2220,6 +2408,8 @@
             "name": "groupId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2228,51 +2418,8 @@
             "name": "roleId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedGroup"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedGroup"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListedGroup"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Group"
-        ],
-        "parameters": [
-          {
-            "name": "groupId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "roleId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2310,6 +2457,8 @@
             "name": "groupId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2318,6 +2467,57 @@
             "name": "roleId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedGroup"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedGroup"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListedGroup"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Group"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2356,6 +2556,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2397,6 +2600,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2426,6 +2632,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2473,33 +2682,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DetailedOpportunity"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Opportunity"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2527,6 +2711,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2534,6 +2720,35 @@
         ],
         "responses": {
           "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedOpportunity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Opportunity"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -2556,29 +2771,8 @@
             "name": "opportunityId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Opportunity"
-        ],
-        "parameters": [
-          {
-            "name": "opportunityId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2602,6 +2796,33 @@
             "name": "opportunityId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Opportunity"
+        ],
+        "parameters": [
+          {
+            "name": "opportunityId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2627,29 +2848,8 @@
             "name": "opportunityId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Opportunity"
-        ],
-        "parameters": [
-          {
-            "name": "opportunityId",
-            "in": "path",
-            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2673,6 +2873,33 @@
             "name": "opportunityId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Opportunity"
+        ],
+        "parameters": [
+          {
+            "name": "opportunityId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2697,6 +2924,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2727,6 +2957,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2756,6 +2988,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2763,6 +2997,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2793,6 +3030,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2800,6 +3039,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2830,6 +3072,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2837,6 +3081,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2867,6 +3114,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2874,6 +3123,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2903,6 +3155,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2932,6 +3187,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -2962,6 +3220,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2991,6 +3251,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -2998,6 +3260,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3027,6 +3292,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3074,6 +3342,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3092,7 +3362,7 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "RequiredLearning"
         ],
@@ -3101,13 +3371,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -3119,7 +3391,7 @@
           }
         }
       },
-      "delete": {
+      "patch": {
         "tags": [
           "RequiredLearning"
         ],
@@ -3128,13 +3400,15 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -3156,6 +3430,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3185,6 +3462,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3214,6 +3494,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3244,6 +3527,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3273,6 +3558,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3301,6 +3588,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3330,6 +3620,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3360,6 +3653,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3389,6 +3684,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3396,6 +3693,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3425,6 +3725,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3472,6 +3775,8 @@
             "name": "userSkillRatingId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3499,6 +3804,8 @@
             "name": "userSkillRatingId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3527,6 +3834,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3565,7 +3875,7 @@
       }
     },
     "/api/v2/users/{id}": {
-      "patch": {
+      "get": {
         "tags": [
           "User"
         ],
@@ -3574,6 +3884,18 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3601,6 +3923,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3619,7 +3943,7 @@
           }
         }
       },
-      "get": {
+      "patch": {
         "tags": [
           "User"
         ],
@@ -3628,13 +3952,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "identifier",
-            "in": "query",
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3663,6 +3982,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3672,6 +3994,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3679,6 +4003,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3686,6 +4013,9 @@
           {
             "name": "modelUserId",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3714,6 +4044,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3723,6 +4056,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3730,6 +4065,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3758,6 +4096,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3767,6 +4108,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3774,6 +4117,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3802,6 +4148,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3811,6 +4160,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3818,6 +4169,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3846,6 +4200,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3855,6 +4212,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3862,6 +4221,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3890,6 +4252,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3899,6 +4264,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3906,6 +4273,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3934,6 +4304,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3943,6 +4316,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3950,6 +4325,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -3978,6 +4356,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -3987,6 +4368,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -3994,6 +4377,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4022,6 +4408,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4031,6 +4420,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4038,6 +4429,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4066,6 +4460,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4075,6 +4472,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4082,6 +4481,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4110,6 +4512,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4119,6 +4524,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4126,6 +4533,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4154,6 +4564,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4163,6 +4576,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4170,6 +4585,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4198,6 +4616,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4207,6 +4628,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4214,6 +4637,9 @@
           {
             "name": "identifier",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -4242,6 +4668,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4251,6 +4680,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4279,6 +4710,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4288,6 +4722,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4344,23 +4780,6 @@
       }
     },
     "/api/v2/user-custom-attributes": {
-      "post": {
-        "tags": [
-          "UserCustomAttribute"
-        ],
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserCustomAttributeDetail"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "tags": [
           "UserCustomAttribute"
@@ -4369,6 +4788,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4387,10 +4809,27 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "UserCustomAttribute"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCustomAttributeDetail"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/user-custom-attributes/{id}": {
-      "patch": {
+      "get": {
         "tags": [
           "UserCustomAttribute"
         ],
@@ -4399,6 +4838,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4417,7 +4858,7 @@
           }
         }
       },
-      "get": {
+      "patch": {
         "tags": [
           "UserCustomAttribute"
         ],
@@ -4426,6 +4867,8 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4454,6 +4897,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4483,6 +4929,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4521,33 +4970,6 @@
       }
     },
     "/api/v2/user-skills/{userSkillId}": {
-      "delete": {
-        "tags": [
-          "UserSkill"
-        ],
-        "parameters": [
-          {
-            "name": "userSkillId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostedUserSkill"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "tags": [
           "UserSkill"
@@ -4557,6 +4979,8 @@
             "name": "userSkillId",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4574,6 +4998,35 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "UserSkill"
+        ],
+        "parameters": [
+          {
+            "name": "userSkillId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostedUserSkill"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v2/views": {
@@ -4585,6 +5038,9 @@
           {
             "name": "limit",
             "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -4615,6 +5071,8 @@
             "name": "orgCode",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4637,6 +5095,8 @@
             "name": "orgCode",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4659,6 +5119,8 @@
             "name": "orgCode",
             "in": "path",
             "required": true,
+            "style": "simple",
+            "explode": false,
             "schema": {
               "type": "string"
             }
@@ -4695,10 +5157,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -4759,6 +5221,7 @@
           },
           "owner": {
             "type": "string",
+            "description": "`owner` is usually the author of an article.",
             "nullable": true
           },
           "publishDate": {
@@ -4802,10 +5265,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -4884,12 +5347,12 @@
         "additionalProperties": false
       },
       "AssignmentType": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           0,
           1
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "BaseResource": {
         "type": "object",
@@ -4952,10 +5415,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -5160,6 +5623,8 @@
         "additionalProperties": false
       },
       "ContentType": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           0,
           6,
@@ -5168,9 +5633,7 @@
           13,
           14,
           15
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "Course": {
         "type": "object",
@@ -5193,10 +5656,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -5579,31 +6042,31 @@
           },
           "matchedSkills": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/OpportunitySkill"
-            },
-            "nullable": true
+            }
           },
           "collaborators": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/Collaborator"
-            },
-            "nullable": true
+            }
           },
           "pathways": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/BaseResource"
-            },
-            "nullable": true
+            }
           },
           "plans": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/BaseResource"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -5649,17 +6112,17 @@
           },
           "sections": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/PathwaySection"
-            },
-            "nullable": true
+            }
           },
           "collaborators": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/DetailedPathwayCollaborator"
-            },
-            "nullable": true
+            }
           },
           "createdBy": {
             "type": "string",
@@ -5739,10 +6202,10 @@
           },
           "users": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/BasicUser"
-            },
-            "nullable": true
+            }
           },
           "organizationId": {
             "type": "integer",
@@ -5836,10 +6299,10 @@
           },
           "sections": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SkillPlanSection"
-            },
-            "nullable": true
+            }
           },
           "visibility": {
             "type": "string",
@@ -5870,10 +6333,10 @@
           },
           "collaborators": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SkillPlanCollaborator"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -5899,10 +6362,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -6111,14 +6574,14 @@
         "additionalProperties": false
       },
       "GroupPrivacyLevel": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           0,
           1,
           2,
           3
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "GroupRelationship": {
         "type": "object",
@@ -6135,22 +6598,22 @@
         "additionalProperties": false
       },
       "GroupType": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           0,
           1
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "InvolvementLevel": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           0,
           2,
           4,
           6
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "JToken": {
         "type": "array",
@@ -7526,10 +7989,10 @@
           },
           "resources": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/PathwayResource"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -7581,10 +8044,10 @@
           },
           "lessons": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/PathwayLesson"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -7610,10 +8073,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
@@ -8034,10 +8497,10 @@
           },
           "matchedSkills": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/OpportunitySkill"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -8170,6 +8633,8 @@
         "additionalProperties": false
       },
       "ResourceType": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           1,
           2,
@@ -8180,9 +8645,7 @@
           11,
           16,
           20
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "Skill": {
         "type": "object",
@@ -8326,21 +8789,21 @@
           },
           "resources": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SkillPlanResource"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
       },
       "SkillScale": {
+        "type": "integer",
+        "format": "int32",
         "enum": [
           3,
           5
-        ],
-        "type": "integer",
-        "format": "int32"
+        ]
       },
       "User": {
         "type": "object",
@@ -8862,10 +9325,10 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
-            },
-            "nullable": true
+            }
           },
           "externalId": {
             "type": "string",
