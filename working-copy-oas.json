@@ -959,6 +959,7 @@
     },
     "/api/v2/content/articles": {
       "get": {
+        "description":"This endpoint retrieves all articles for the current organization.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "tags": [
           "Content"
         ],
