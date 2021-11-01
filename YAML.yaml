@@ -1,8 +1,0 @@
-openapi: "3.0.0"
-info: 
-  version: "2.0.0"
-  title: "degreed-api-v2"
-servers: 
-  - 
-    url: "https://degreed.com/api/v2/"
-paths: {}
