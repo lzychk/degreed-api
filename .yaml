@@ -1,0 +1,10 @@
+openapi: "3.0.0"
+info: 
+  version: "1.0.0"
+  title: "Degreed APIv2"
+  license: 
+    name: "seHjuv23LPEpPNDaV1j7rcu621fHgVEF"
+servers: 
+  - 
+    url: "https://api.betatest.degreed.com"
+paths: {}
