@@ -1929,7 +1929,7 @@
           {
             "name": "contentId",
             "in": "path",
-            "description": "The ID of the content to retrieve.",
+            "description": "The ID of the content to add skills to.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -1951,13 +1951,13 @@
           {
             "name": "type",
             "in": "header",
-            "description": "Type of object that will be added as a relationship. Can only be `user-skills`.",
+            "description": "Type of object that will be added as a relationship. Use `skills`.",
             "required": false,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string",
-              "default": "user-skills"
+              "default": "skills"
             }
           }
         ],
@@ -1978,7 +1978,7 @@
         "tags": [
           "Content"
         ],
-        "description": "This endpoint deletes the specified skills in content. On a successful add, it returns a `201 Success` response. <h2>Required Scope</h2>`content:write`",
+        "description": "This endpoint deletes the specified skills in content. On a successful delete, it returns a `204 No Content` response.<h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
@@ -2005,13 +2005,13 @@
           {
             "name": "type",
             "in": "header",
-            "description": "Type of object that will be deleted as a relationship. Can only be `user-skills`.",
+            "description": "Type of object that will be deleted as a relationship. Use `skills`.",
             "required": false,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string",
-              "default": "user-skills"
+              "default": "skills"
             }
           }
         ],
@@ -2059,13 +2059,13 @@
           {
             "name": "type",
             "in": "header",
-            "description": "Type of object that will be added as a relationship. Can only be `user-skills`.",
+            "description": "Type of object that will be added as a relationship. Use `skills`.",
             "required": false,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string",
-              "default": "user-skills"
+              "default": "skills"
             }
           }
         ],
@@ -2121,7 +2121,7 @@
         "tags": [
           "Content"
         ],
-        "description": "This endpoint replaces all content's visibility groups. On a successful replacement, it returns a `201 Created` response. If the patch is set with an empty list, the content will not be shared in any groups.<h2>Required Scope</h2>`content:write`<br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content has one or more `Administrative` visibility groups set, and you send the body with an empty list of groups, the content will be visible to any users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.",
+        "description": "This endpoint replaces all content's visibility groups. On a successful replacement, it returns a `201 Created` response. If the patch is set with an empty list, the content will not be shared in any groups.<br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content has one or more `Administrative` visibility groups set, and you send the body with an empty list of groups, the content will be visible to any users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
