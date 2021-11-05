@@ -761,16 +761,90 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all content (excluding obsolete content) for the current organization. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of content.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of content items to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "filter[start_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created from this date on. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[end_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created before this date. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[url]",
+            "in": "query",
+            "description": "Filter criteria that only returns content with this URL.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "string"
+            }
+          },
+          {
+            "name": "filter[internal_only]",
+            "in": "query",
+            "description": "Filter criteria that only returns content internal to the organization.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "filter[include_restricted]",
+            "in": "query",
+            "description": "Filter criteria that only returns content restricted to administrative groups.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -793,10 +867,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves a specific content item for the current organization.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the content to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -959,10 +1035,10 @@
     },
     "/api/v2/content/articles": {
       "get": {
-        "description":"This endpoint retrieves all articles for the current organization.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all articles for the current organization.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "limit",
@@ -1791,10 +1867,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all skills for a specific content item. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -1803,14 +1881,27 @@
             }
           },
           {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of content.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of content items to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
             }
           }
         ],
@@ -1833,15 +1924,40 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint adds one or more skills to existing content. On a successful add, it returns a `201 Created` response. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content to add skills to.",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "description": "String containing the name of the skill. The name is also the unique identifier.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "header",
+            "description": "Type of object that will be added as a relationship. Use `skills`.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "default": "skills"
             }
           }
         ],
@@ -1862,15 +1978,40 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint deletes the specified skills in content. On a successful delete, it returns a `204 No Content` response.<h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content to delete skills from.",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "description": "String containing the name of the skill. The name is also the unique identifier.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "header",
+            "description": "Type of object that will be deleted as a relationship. Use `skills`.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "default": "skills"
             }
           }
         ],
@@ -1891,15 +2032,40 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint replaces all skills in existing content with the newly supplied skills. On a successful add, it returns a `201 Created` response.<h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content to add replace skills in.",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "description": "String containing the name of the skill. The name is also the unique identifier.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "header",
+            "description": "Type of object that will be added as a relationship. Use `skills`.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "default": "skills"
             }
           }
         ],
@@ -1922,26 +2088,17 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves visibility groups for a specific content item. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content for which the visibility groups will be retrieved. The content type may be `Articles`, `Assessments`, `Courses`, `Events`, `Podcasts` or `Videos`.",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
             }
           }
         ],
@@ -1964,10 +2121,34 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint replaces all content's visibility groups. On a successful replacement, it returns a `201 Created` response. If the patch is set with an empty list, the content will not be shared in any groups.<br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content has one or more `Administrative` visibility groups set, and you send the body with an empty list of groups, the content will be visible to any users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "contentId",
             "in": "path",
+            "description": "The ID of the content for which the visibility groups will be replaced. The content type can be `Articles`, `Assessments`, `Courses`, `Events`, `Podcasts` or `Videos`.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "description": "ID of the visibility group that will replace any existing visibility groups for the content.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "header",
+            "description": "Type of object that will be added as a relationship. Can only be `groups`.",
             "required": true,
             "style": "simple",
             "explode": false,
