@@ -900,16 +900,78 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all books for the current organization. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of books.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of books to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "filter[start_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created from this date on. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[end_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created before this date. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[external_id]",
+            "in": "query",
+            "description": "Filter criteria that only returns books with this external ID.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "string"
+            }
+          },
+          {
+            "name": "filter[internal_only]",
+            "in": "query",
+            "description": "Filter criteria that only returns books internal to the organization.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],
@@ -930,6 +992,108 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint creates a new book in the system. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:write`",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "header",
+            "description": "The title of the book.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtitle",
+            "in": "header",
+            "description": "The subtitle of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authors",
+            "in": "header",
+            "description": "Comma delimited list of authors.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pages",
+            "in": "header",
+            "description": "Number of pages.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "summary",
+            "in": "header",
+            "description": "Short summary of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image-url",
+            "in": "header",
+            "description": "Cover image of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "obsolete",
+            "in": "header",
+            "description": "If the book should be marked as obsolete.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "publish-date",
+            "in": "header",
+            "description": "Date that the book has been published.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Language of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Success",
@@ -949,10 +1113,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves a specific book for the current organization.<br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the book to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -5657,7 +5823,7 @@
             "type": "string",
             "nullable": true
           },
-          "isbn13": {
+          "i-s-b-n-13": {
             "type": "string",
             "nullable": true
           },
