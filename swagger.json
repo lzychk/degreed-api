@@ -900,16 +900,78 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all books for the current organization. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of books.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of books to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "filter[start_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created from this date on. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[end_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created before this date. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[external_id]",
+            "in": "query",
+            "description": "Filter criteria that only returns books with this external ID.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "string"
+            }
+          },
+          {
+            "name": "filter[internal_only]",
+            "in": "query",
+            "description": "Filter criteria that only returns books internal to the organization.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],
@@ -930,6 +992,130 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint creates a new book in the system. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:write`",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "header",
+            "description": "The title of the book.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtitle",
+            "in": "header",
+            "description": "The subtitle of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authors",
+            "in": "header",
+            "description": "Comma delimited list of authors.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pages",
+            "in": "header",
+            "description": "Number of pages.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "summary",
+            "in": "header",
+            "description": "Short summary of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image-url",
+            "in": "header",
+            "description": "Cover image of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "obsolete",
+            "in": "header",
+            "description": "If the book should be marked as obsolete.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "publish-date",
+            "in": "header",
+            "description": "Date that the book was published.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "Language of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external-id",
+            "in": "header",
+            "description": "External ID of the book. This is usually the URL where the book can be found.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "i-s-b-n13",
+            "in": "header",
+            "description": "ISBN13 number of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Success",
@@ -949,10 +1135,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves a specific book for the current organization.<br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the book to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -978,10 +1166,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint marks a book as obsolete from the Degreed catalog. On a successful delete, it returns a `204 No Content` response. <br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the book to delete.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -1007,11 +1197,167 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint updates the supplied fields for a specific book.<br><br>The `PATCH` request does not support the `X-Degreed-Organization-Code` header. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the book to update.",
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "header",
+            "description": "The title of the book.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtitle",
+            "in": "header",
+            "description": "The subtitle of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authors",
+            "in": "header",
+            "description": "Comma delimited list of authors.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pages",
+            "in": "header",
+            "description": "Number of pages.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "summary",
+            "in": "header",
+            "description": "Short summary of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image-url",
+            "in": "header",
+            "description": "Cover image of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "obsolete",
+            "in": "header",
+            "description": "If the book should be marked as obsolete.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "publish-date",
+            "in": "header",
+            "description": "The date that the book was published.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "The language of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external-id",
+            "in": "header",
+            "description": "External ID of the book. This is usually the URL where the book can be found.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "i-s-b-n13",
+            "in": "header",
+            "description": "The ISBN13 number of the book.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization-id",
+            "in": "header",
+            "description": "The ID of the organization.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider-code",
+            "in": "header",
+            "description": "Unique provider code.",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider-id",
+            "in": "header",
+            "description": "The ID of the provider.",
+            "required": false,
             "style": "simple",
             "explode": false,
             "schema": {
@@ -5344,7 +5690,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -5374,7 +5720,7 @@
           "obsolete": {
             "type": "boolean"
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -5397,7 +5743,7 @@
             "format": "int64",
             "nullable": true
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
@@ -5406,20 +5752,20 @@
             "description": "`owner` is usually the author of an article.",
             "nullable": true
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           }
@@ -5452,7 +5798,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -5475,14 +5821,14 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
           "obsolete": {
             "type": "boolean"
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -5504,7 +5850,7 @@
             "format": "int64",
             "nullable": true
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
@@ -5512,16 +5858,16 @@
             "type": "string",
             "nullable": true
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -5602,7 +5948,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -5633,14 +5979,14 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
           "obsolete": {
             "type": "boolean"
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -5649,7 +5995,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -5657,7 +6003,7 @@
             "type": "string",
             "nullable": true
           },
-          "isbn13": {
+          "i-s-b-n-13": {
             "type": "string",
             "nullable": true
           },
@@ -5671,15 +6017,15 @@
             "format": "int64",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
@@ -5726,11 +6072,11 @@
             "format": "int64",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -5843,7 +6189,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -5864,11 +6210,11 @@
             "format": "int64",
             "nullable": true
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -5887,7 +6233,7 @@
           "obsolete": {
             "type": "boolean"
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -5900,7 +6246,7 @@
             "format": "double",
             "nullable": true
           },
-          "durationType": {
+          "duration-type": {
             "type": "string",
             "nullable": true
           },
@@ -5929,11 +6275,11 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -6010,7 +6356,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -6031,7 +6377,7 @@
             "type": "string",
             "nullable": true
           },
-          "isInternal": {
+          "is-internal": {
             "type": "boolean"
           },
           "contentProvider": {
@@ -6177,7 +6523,7 @@
             "type": "string",
             "nullable": true
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -6185,18 +6531,18 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
-          "isObsolete": {
+          "is-obsolete": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -6214,7 +6560,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -6288,7 +6634,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -6310,11 +6656,11 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -6352,7 +6698,7 @@
             "type": "string",
             "nullable": true
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -6403,7 +6749,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -6432,11 +6778,11 @@
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -6493,15 +6839,15 @@
           "canCollaborate": {
             "type": "boolean"
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -6549,7 +6895,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -6583,7 +6929,7 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -6594,7 +6940,7 @@
             "type": "string",
             "nullable": true
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -6615,7 +6961,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           }
@@ -6840,7 +7186,7 @@
             "format": "date-time",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -6902,11 +7248,11 @@
           "isFeatured": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -7013,7 +7359,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -7034,7 +7380,7 @@
             "type": "string",
             "nullable": true
           },
-          "isInternal": {
+          "is-internal": {
             "type": "boolean"
           },
           "contentProvider": {
@@ -7118,11 +7464,11 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -7142,10 +7488,10 @@
             "type": "string",
             "nullable": true
           },
-          "isObsolete": {
+          "is-obsolete": {
             "type": "boolean"
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -7157,7 +7503,7 @@
             "type": "number",
             "format": "double"
           },
-          "durationType": {
+          "duration-type": {
             "type": "string",
             "nullable": true
           },
@@ -7165,22 +7511,22 @@
             "type": "string",
             "nullable": true
           },
-          "isInternal": {
+          "is-internal": {
             "type": "boolean"
           },
           "owner": {
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           }
@@ -7229,11 +7575,11 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -7357,7 +7703,7 @@
             "type": "string",
             "nullable": true
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -7365,18 +7711,18 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
-          "isObsolete": {
+          "is-obsolete": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -7394,7 +7740,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -7440,7 +7786,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -7448,11 +7794,11 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -7490,7 +7836,7 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -7530,7 +7876,7 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -7565,7 +7911,7 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -7600,7 +7946,7 @@
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -7710,7 +8056,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -7739,11 +8085,11 @@
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -7829,7 +8175,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -7841,7 +8187,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -7865,12 +8211,12 @@
             "type": "string",
             "nullable": true
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "isInternal": {
+          "is-internal": {
             "type": "boolean"
           }
         },
@@ -7911,15 +8257,15 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -8049,7 +8395,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -8065,7 +8411,7 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -8073,7 +8419,7 @@
             "type": "number",
             "format": "double"
           },
-          "durationType": {
+          "duration-type": {
             "type": "string",
             "nullable": true
           },
@@ -8120,7 +8466,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -8260,7 +8606,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -8293,7 +8639,7 @@
             "format": "int64",
             "nullable": true
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
@@ -8305,7 +8651,7 @@
             "format": "double",
             "nullable": true
           },
-          "durationType": {
+          "duration-type": {
             "type": "string",
             "nullable": true
           },
@@ -8313,7 +8659,7 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -8321,7 +8667,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -8337,16 +8683,16 @@
             "type": "string",
             "nullable": true
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           }
@@ -8394,7 +8740,7 @@
             "format": "date-time",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -8540,7 +8886,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -8640,7 +8986,7 @@
             "type": "string",
             "nullable": true
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -8648,18 +8994,18 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
-          "isObsolete": {
+          "is-obsolete": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -8736,7 +9082,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentType": {
+          "content-type": {
             "type": "string",
             "nullable": true
           },
@@ -8752,11 +9098,11 @@
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -9104,7 +9450,7 @@
             "format": "int64",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -9293,7 +9639,7 @@
             "type": "string",
             "nullable": true
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -9301,18 +9647,18 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
-          "isObsolete": {
+          "is-obsolete": {
             "type": "boolean"
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           },
@@ -9330,7 +9676,7 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
@@ -9512,7 +9858,7 @@
               "$ref": "#/components/schemas/GroupRelationship"
             }
           },
-          "externalId": {
+          "external-id": {
             "type": "string",
             "nullable": true
           },
@@ -9533,7 +9879,7 @@
             "format": "int64",
             "nullable": true
           },
-          "providerCode": {
+          "provider-code": {
             "type": "string",
             "nullable": true
           },
@@ -9549,14 +9895,14 @@
             "type": "string",
             "nullable": true
           },
-          "degreedUrl": {
+          "degreed-url": {
             "type": "string",
             "nullable": true
           },
           "obsolete": {
             "type": "boolean"
           },
-          "imageUrl": {
+          "image-url": {
             "type": "string",
             "nullable": true
           },
@@ -9569,7 +9915,7 @@
             "format": "double",
             "nullable": true
           },
-          "durationType": {
+          "duration-type": {
             "type": "string",
             "nullable": true
           },
@@ -9577,16 +9923,16 @@
             "type": "string",
             "nullable": true
           },
-          "publishDate": {
+          "publish-date": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "createdAt": {
+          "created-at": {
             "type": "string",
             "format": "date-time"
           },
-          "modifiedAt": {
+          "modified-at": {
             "type": "string",
             "format": "date-time"
           }
