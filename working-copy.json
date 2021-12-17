@@ -3074,6 +3074,7 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint updates supplied fields for a specific podcast. The `PATCH` request does not support the `X-Degreed-Organization-Code` header. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "id",
