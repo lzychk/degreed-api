@@ -2907,7 +2907,7 @@
           {
             "name": "obsolete",
             "in": "header",
-            "description": "If the video should be marked as obsolete.",
+            "description": "If the podcast should be marked as obsolete.",
             "required": false,
             "style": "simple",
             "explode": true,
@@ -3165,7 +3165,7 @@
           {
             "name": "obsolete",
             "in": "header",
-            "description": "If the video should be marked as obsolete.",
+            "description": "If the podcast should be marked as obsolete.",
             "required": false,
             "style": "simple",
             "explode": true,
