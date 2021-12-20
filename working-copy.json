@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Degreed.Api.Web",
-    "version": "2.0"
+    "version": "1.0"
   },
   "servers": [
     {
@@ -3079,6 +3079,7 @@
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the podcast to update.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -3271,16 +3272,90 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves all assessments for the current organization.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:read`",
         "parameters": [
+          {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of assessments.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of assessments to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "filter[start_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created from this date on. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[end_date]",
+            "in": "query",
+            "description": "Filter criteria that returns content created before this date. Format `yyyy-mm-dd`.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[external-id]",
+            "in": "query",
+            "description": "Filter criteria that only returns assessments with this external ID.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "string"
+            }
+          },
+          {
+            "name": "filter[internal_only]",
+            "in": "query",
+            "description": "Filter criteria that only returns assessments internal to the organization.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "filter[include_restricted]",
+            "in": "query",
+            "description": "Filter criteria that only returns assessments restricted to administrative groups.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -3301,6 +3376,142 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint creates a new assessment in the system and optionally creates visibilty group relationships. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content is not associated with any Administrative groups, the content is visible to all users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "header",
+            "description": "The title of the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organization-id",
+            "in": "header",
+            "description": "The ID of the organization.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider-id",
+            "in": "header",
+            "description": "The ID of the provider.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider-code",
+            "in": "header",
+            "description": "Unique provider code.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external-id",
+            "in": "header",
+            "description": "The external ID of the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "summary",
+            "in": "header",
+            "description": "Short summary of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "url",
+            "in": "header",
+            "description": "URL location where more information can be found.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "num-questions",
+            "in": "header",
+            "description": "The number of words in the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "image-url",
+            "in": "header",
+            "description": "Cover image of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "The language of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "publish-date",
+            "in": "header",
+            "description": "Date that the assessment was been published",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "visibility-groups",
+            "in": "header",
+            "description": "The realationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Success",
@@ -3320,10 +3531,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint retrieves a specific assessment for the current organization.<br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`content:read`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the assessment to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -3349,10 +3562,12 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint marks an assessment as obsolete from the Degreed catalog. On a successful delete, it returns a `204 No Content` response. <br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the assessment to delete.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -3378,15 +3593,117 @@
         "tags": [
           "Content"
         ],
+        "description": "This endpoint updates supplied fields for a specific assessment. The `PATCH` request does not support the `X-Degreed-Organization-Code` header. <h2>Required Scope</h2>`content:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the assessment to update.",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "header",
+            "description": "The title of the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider-code",
+            "in": "header",
+            "description": "Unique provider code.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external-id",
+            "in": "header",
+            "description": "The external ID of the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "summary",
+            "in": "header",
+            "description": "Short summary of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "url",
+            "in": "header",
+            "description": "URL location where more information can be found.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "num-questions",
+            "in": "header",
+            "description": "The number of words in the assessment.",
+            "required": true,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "image-url",
+            "in": "header",
+            "description": "Cover image of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "header",
+            "description": "The language of the assessment.",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "publish-date",
+            "in": "header",
+            "description": "Date that the assessment was been published",
+            "required": false,
+            "style": "simple",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
             }
           }
         ],
@@ -7032,16 +7349,16 @@
             "type": "string",
             "nullable": true
           },
-          "numQuestions": {
+          "num-questions": {
             "type": "integer",
             "format": "int32"
           },
-          "organizationId": {
+          "organization-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
           },
-          "providerId": {
+          "provider-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
