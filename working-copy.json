@@ -623,16 +623,54 @@
         "tags": [
           "Completion"
         ],
+        "description": "This endpoint retrieves all completions for the organization. Completions require a start and end date, with a maximum range of 7 days.<br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will return completions for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`completions:read`",
         "parameters": [
+          {
+            "name": "filter[start_date]",
+            "in": "query",
+            "description": "Filter criteria that returns completions added from this date on. Format `yyyy-mm-dd`.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter[end_date]",
+            "in": "query",
+            "description": "Filter criteria that returns completions added until this date. Format `yyyy-mm-dd`.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "description": "Retrieves the next batch of completions.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
+            "description": "The maximum number of completions to display per page. A maximum of 1000 is allowed.",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 100
             }
           }
         ],
@@ -653,6 +691,16 @@
         "tags": [
           "Completion"
         ],
+        "description": "This endpoint creates a new completion for the user in the organization and content available to the organization. If the organization is a Global Admin Tool Organization or a provider requesting on behalf of the organization, completions can be created for Tenant Organization users and content available within the organization structure. Global Admin Tool Organization should exercise caution when indicating which content the user has completed. <br><br>For Global Admin Tool Organizations, if the user of the completion belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header can be provided, but is no longer necessary and may limit the content for which the completion can be created.<h2>Required Scope</h2>`completions:write`",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostedCompletion"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -672,10 +720,12 @@
         "tags": [
           "Completion"
         ],
+        "description": "This endpoint retrieves a specific completion for the organization. If the organization is a Global Admin Tool Organization or a provider requesting on behalf of the organization, completions will be returned for Tenant Organizations.<br><br>For Global Admin Tool Organizations, if the user of the completion belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header can be provided, but is no longer necessary.<h2>Required Scope</h2>`completions:read` or `completions:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the completion to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -701,10 +751,12 @@
         "tags": [
           "Completion"
         ],
+        "description": "This endpoint deletes a completion from the system. On a successful delete, it returns a `204 No Content` response. <br><br>For Global Admin Tool Organizations, if the content belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided. <h2>Required Scope</h2>`completions:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the completion to delete.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -730,10 +782,12 @@
         "tags": [
           "Completion"
         ],
+        "description": "This endpoint updates supplied fields for a specific completion. The `PATCH` endpoint does not support the `X-Degreed-Organization-Code` header.<h2>Required Scope</h2>`completions:write`",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the completion to update.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -742,6 +796,15 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostedCompletion"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -993,130 +1056,15 @@
           "Content"
         ],
         "description": "This endpoint creates a new book in the system. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <h2>Required Scope</h2>`content:write`",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the book.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "subtitle",
-            "in": "header",
-            "description": "The subtitle of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authors",
-            "in": "header",
-            "description": "Comma delimited list of authors.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pages",
-            "in": "header",
-            "description": "Number of pages.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the book should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "Date that the book was published.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Language of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "External ID of the book. This is usually the URL where the book can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "i-s-b-n13",
-            "in": "header",
-            "description": "ISBN13 number of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -1210,162 +1158,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the book.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "subtitle",
-            "in": "header",
-            "description": "The subtitle of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authors",
-            "in": "header",
-            "description": "Comma delimited list of authors.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pages",
-            "in": "header",
-            "description": "Number of pages.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the book should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "The date that the book was published.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "The language of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "External ID of the book. This is usually the URL where the book can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "i-s-b-n13",
-            "in": "header",
-            "description": "The ISBN13 number of the book.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -1629,130 +1432,15 @@
           "Content"
         ],
         "description": "This endpoint creates a new video in the system and optionally creates visibilty group relationships. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization.<br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content is not associated with any Administrative groups, the content is visible to all users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the video.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the video.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the video should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the video. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "Date that the video was published.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "visibility-groups",
-            "in": "header",
-            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Video"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -1846,108 +1534,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the video.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the video should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the video.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the video. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "Date that the video was published.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Video"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -2210,206 +1807,15 @@
           "Content"
         ],
         "description": "This endpoint creates a new course in the system and optionally creates visibilty group relationships. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content is not associated with any Administrative groups, the content is visible to all users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the course.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the course should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the course. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "cost-units",
-            "in": "header",
-            "description": "Units for the cost.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "cost-unit-type",
-            "in": "header",
-            "description": "The cost unit type can be any currency",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "format",
-            "in": "header",
-            "description": "Format of the course. Possible values include `Virtual Classroom`, `Accredited`, `Instructor Led Training`, and `Online`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "difficulty",
-            "in": "header",
-            "description": "Describes the difficulty level of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "video-url",
-            "in": "header",
-            "description": "If the course has a video, supply the URL where the video can be accessed.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "visibility-groups",
-            "in": "header",
-            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -2502,206 +1908,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the course.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the course should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the course. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "cost-units",
-            "in": "header",
-            "description": "Units for the cost.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "cost-unit-type",
-            "in": "header",
-            "description": "The cost unit type can be any currency",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "format",
-            "in": "header",
-            "description": "Format of the course. Possible values include `Virtual Classroom`, `Accredited`, `Instructor Led Training`, and `Online`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "difficulty",
-            "in": "header",
-            "description": "Describes the difficulty level of the course.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "video-url",
-            "in": "header",
-            "description": "If the course has a video, supply the URL where the video can be accessed.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "visibility-groups",
-            "in": "header",
-            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -2826,173 +2043,15 @@
           "Content"
         ],
         "description": "This endpoint creates a new podcast in the system and optionally creates visibilty group relationships. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content is not associated with any Administrative groups, the content is visible to all users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the podcast.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the podcast.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the podcast should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the podcast. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "format",
-            "in": "header",
-            "description": "The type of podcast format.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "feed-url",
-            "in": "header",
-            "description": "The URL of the podcast feed.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "author",
-            "in": "header",
-            "description": "The creator of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Podcast"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -3086,173 +2145,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the podcast.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the podcast.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "obsolete",
-            "in": "header",
-            "description": "If the podcast should be marked as obsolete.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "Spoken language of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration",
-            "in": "header",
-            "description": "Length of the podcast. Type is supplied with `duration-type`.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "duration-type",
-            "in": "header",
-            "description": "Seconds, minutes, hours, or days.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "format",
-            "in": "header",
-            "description": "The type of podcast format.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "feed-url",
-            "in": "header",
-            "description": "The URL of the podcast feed.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "author",
-            "in": "header",
-            "description": "The creator of the podcast.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Podcast"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -3377,141 +2280,15 @@
           "Content"
         ],
         "description": "This endpoint creates a new assessment in the system and optionally creates visibilty group relationships. <br><br>For Global Admin Tool Organizations, if the `X-Degreed-Organization-Code` header is included, then the endpoint will create content for the Tenant Organization related to the header value as long as the organization is a member of the Global Admin Tool Organization. <br><br>**Note:** When visibility groups are set for content, the groups must either be (a) all of privacy level `Administrative` or (b) all of a non- `Administrative` privacy level. Non- `Administrative` privacy levels include `Open`, `Closed` and `Private`. Content in `Administrative` groups is only visible to users in the `Administrative` groups. If the content is not associated with any Administrative groups, the content is visible to all users in the organization. A group's privacy level can be retrived from the [Get a Specific Group]() endpoint.<h2>Required Scope</h2>`content:write`",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "organization-id",
-            "in": "header",
-            "description": "The ID of the organization.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-id",
-            "in": "header",
-            "description": "The ID of the provider.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "num-questions",
-            "in": "header",
-            "description": "The number of words in the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "The language of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "Date that the assessment was been published",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "visibility-groups",
-            "in": "header",
-            "description": "The realationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Assessment"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -3605,108 +2382,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "title",
-            "in": "header",
-            "description": "The title of the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "provider-code",
-            "in": "header",
-            "description": "Unique provider code.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "external-id",
-            "in": "header",
-            "description": "The external ID of the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "summary",
-            "in": "header",
-            "description": "Short summary of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "header",
-            "description": "URL location where more information can be found.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "num-questions",
-            "in": "header",
-            "description": "The number of words in the assessment.",
-            "required": true,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "image-url",
-            "in": "header",
-            "description": "Cover image of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "language",
-            "in": "header",
-            "description": "The language of the assessment.",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "publish-date",
-            "in": "header",
-            "description": "Date that the assessment was been published",
-            "required": false,
-            "style": "simple",
-            "explode": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Assessment"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -3795,31 +2481,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "id",
-            "in": "header",
-            "description": "String containing the name of the skill. The name is also the unique identifier.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "header",
-            "description": "Type of object that will be added as a relationship. Use `skills`.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "default": "skills"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListedContent"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -3848,29 +2520,6 @@
             "explode": false,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "header",
-            "description": "String containing the name of the skill. The name is also the unique identifier.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "header",
-            "description": "Type of object that will be deleted as a relationship. Use `skills`.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "default": "skills"
             }
           }
         ],
@@ -3903,31 +2552,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "id",
-            "in": "header",
-            "description": "String containing the name of the skill. The name is also the unique identifier.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "header",
-            "description": "Type of object that will be added as a relationship. Use `skills`.",
-            "required": false,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "default": "skills"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListedContent"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -3992,30 +2627,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "id",
-            "in": "header",
-            "description": "ID of the visibility group that will replace any existing visibility groups for the content.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "header",
-            "description": "Type of object that will be added as a relationship. Can only be `groups`.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListedContent"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Success",
@@ -7306,6 +5928,7 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "description": "The realationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
@@ -7313,7 +5936,8 @@
           },
           "external-id": {
             "type": "string",
-            "nullable": true
+            "description": "The external ID of the assessment.",
+            "nullable": false
           },
           "serializeVisibilityGroups": {
             "type": "boolean"
@@ -7324,15 +5948,18 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "description": "The title of the assessment.",
+            "nullable": false
           },
           "summary": {
             "type": "string",
+            "description": "Short summary of the assessment.",
             "nullable": true
           },
           "url": {
             "type": "string",
-            "nullable": true
+            "description": "URL location where more information can be found.",
+            "nullable": false
           },
           "degreed-url": {
             "type": "string",
@@ -7343,28 +5970,34 @@
           },
           "image-url": {
             "type": "string",
+            "description": "Cover image of the assessment.",
             "nullable": true
           },
           "language": {
             "type": "string",
+            "description": "The language of the assessment.",
             "nullable": true
           },
           "num-questions": {
             "type": "integer",
-            "format": "int32"
+            "description": "The number of words in the assessment.",
+            "format": "int32",
+            "nullable": false
           },
           "organization-id": {
             "type": "integer",
+            "description": "The ID of the organization.",
             "format": "int64",
             "nullable": true
           },
           "provider-id": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
+            "description": "The ID of the provider.",
             "nullable": true
           },
           "provider-code": {
             "type": "string",
+            "description": "Unique provider code.",
             "nullable": true
           },
           "owner": {
@@ -7373,6 +6006,7 @@
           },
           "publish-date": {
             "type": "string",
+            "description": "Date that the assessment was published.",
             "format": "date-time",
             "nullable": true
           },
@@ -7463,7 +6097,8 @@
           },
           "external-id": {
             "type": "string",
-            "nullable": true
+            "description": "External ID of the book. This is usually the URL where the book can be found.",
+            "nullable": false
           },
           "serializeVisibilityGroups": {
             "type": "boolean"
@@ -7474,38 +6109,48 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "description": "The title of the book.",
+            "nullable": false
           },
           "subtitle": {
             "type": "string",
+            "description": "The subtitle of the book.",
             "nullable": true
           },
           "authors": {
             "type": "string",
+            "description": "Comma delimited list of authors.",
             "nullable": true
           },
           "pages": {
             "type": "integer",
-            "format": "int32"
+            "description": "Number of pages.",
+            "format": "int32",
+            "nullable": true
           },
           "summary": {
             "type": "string",
+            "description": "Short summary of the book.",
             "nullable": true
           },
           "image-url": {
             "type": "string",
+            "description": "Cover image of the book.",
             "nullable": true
           },
           "obsolete": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If the book should be marked as obsolete."
           },
           "publish-date": {
             "type": "string",
+            "description": "Date that the book was published.",
             "format": "date-time",
             "nullable": true
           },
           "language": {
             "type": "string",
+            "description": "Language of the book.",
             "nullable": true
           },
           "degreed-url": {
@@ -7518,6 +6163,7 @@
           },
           "i-s-b-n-13": {
             "type": "string",
+            "description": "ISBN13 number of the book.",
             "nullable": true
           },
           "organizationId": {
@@ -7697,6 +6343,7 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
@@ -7704,7 +6351,8 @@
           },
           "external-id": {
             "type": "string",
-            "nullable": true
+            "description": "The external ID of the course.",
+            "nullable": false
           },
           "serializeVisibilityGroups": {
             "type": "boolean"
@@ -7715,16 +6363,19 @@
           },
           "organization-id": {
             "type": "integer",
+            "description": "The ID of the organization.",
             "format": "int64",
             "nullable": true
           },
           "provider-id": {
             "type": "integer",
+            "description": "The ID of the provider.",
             "format": "int64",
             "nullable": true
           },
           "provider-code": {
             "type": "string",
+            "description": "Unique provider code.",
             "nullable": true
           },
           "degreed-url": {
@@ -7733,55 +6384,68 @@
           },
           "title": {
             "type": "string",
+            "description": "The title of the course.",
             "nullable": true
           },
           "summary": {
             "type": "string",
+            "description": "Short summary of the course.",
             "nullable": true
           },
           "url": {
             "type": "string",
-            "nullable": true
+            "description": "URL location where more information can be found.",
+            "nullable": false
           },
           "obsolete": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If the course should be marked as obsolete."
           },
           "image-url": {
             "type": "string",
+            "description": "Cover image of the course.",
             "nullable": true
           },
           "language": {
             "type": "string",
+            "description": "Spoken language of the course.",
             "nullable": true
           },
           "duration": {
             "type": "number",
+            "description": "Length of the course. Type is supplied with `duration-type`.",
             "format": "double",
             "nullable": true
           },
           "duration-type": {
             "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
             "nullable": true
           },
           "cost-units": {
             "type": "number",
+            "description": "Units for the cost.",
             "format": "double",
             "nullable": true
           },
           "cost-unit-type": {
             "type": "string",
+            "description": "The cost unit type can be any currency",
             "nullable": true
           },
           "format": {
             "type": "string",
+            "description": "Format of the course. Possible values include `Virtual Classroom`, `Accredited`, `Instructor Led Training`, and `Online`.",
             "nullable": true
           },
           "difficulty": {
             "type": "string",
+            "description": "Describes the difficulty level of the course.",
             "nullable": true
           },
           "video-url": {
             "type": "string",
+            "description": "If the course has a video, supply the URL where the video can be accessed.",
             "nullable": true
           },
           "owner": {
@@ -7865,7 +6529,7 @@
             "type": "string",
             "nullable": true
           },
-          "contentId": {
+          "content": {
             "type": "string",
             "nullable": true
           },
@@ -7877,40 +6541,40 @@
             "type": "string",
             "nullable": true
           },
-          "contentTitle": {
+          "content-title": {
             "type": "string",
             "nullable": true
           },
-          "contentDuration": {
+          "content-duration": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "contentDurationType": {
+          "content-duration-type": {
             "type": "string",
             "nullable": true
           },
           "is-internal": {
             "type": "boolean"
           },
-          "contentProvider": {
+          "content-provider": {
             "type": "string",
             "nullable": true
           },
-          "userId": {
+          "user-id": {
             "type": "string",
             "nullable": true
           },
-          "employeeId": {
+          "employee-id": {
             "type": "string",
             "nullable": true
           },
-          "completedAt": {
+          "completed-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "addedAt": {
+          "added-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -7919,14 +6583,14 @@
             "type": "string",
             "nullable": true
           },
-          "isVerified": {
+          "is-verified": {
             "type": "boolean"
           },
           "rating": {
             "type": "integer",
             "format": "int32"
           },
-          "questionsCorrect": {
+          "questions-correct": {
             "type": "integer",
             "format": "int32"
           },
@@ -7948,7 +6612,7 @@
             "format": "int64",
             "nullable": true
           },
-          "providerId": {
+          "provider-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
@@ -8959,7 +7623,8 @@
         "properties": {
           "id": {
             "type": "string",
-            "nullable": true
+            "description": "String containing the name of the skill. The name is also the unique identifier.",
+            "nullable": false
           },
           "hasDetailedView": {
             "type": "boolean"
@@ -8975,7 +7640,9 @@
           },
           "type": {
             "type": "string",
-            "nullable": true
+            "description": "Type of object that will be added as a relationship. Use `skills`.",
+            "nullable": true,
+            "default": "skills"
           },
           "content-type": {
             "type": "string",
@@ -10121,7 +8788,8 @@
           },
           "external-id": {
             "type": "string",
-            "nullable": true
+            "description": "The external ID of the podcast.",
+            "nullable": false
           },
           "serializeVisibilityGroups": {
             "type": "boolean"
@@ -10136,49 +8804,65 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "description": "The title of the podcast.",
+            "nullable": false
           },
           "summary": {
             "type": "string",
+            "description": "Short summary of the podcast.",
             "nullable": true
           },
           "organization-id": {
-            "type": "integer",
+            "type": "string",
+            "description": "The ID of the organization.",
             "format": "int64",
             "nullable": true
           },
           "provider-id": {
             "type": "integer",
+            "description": "The ID of the provider.",
             "format": "int64",
             "nullable": true
           },
           "provider-code": {
             "type": "string",
+            "description": "Unique provider code.",
             "nullable": true
           },
           "obsolete": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If the podcast should be marked as obsolete."
           },
           "duration": {
             "type": "number",
+            "description": "Length of the podcast. Type is supplied with duration-type.",
             "format": "double",
             "nullable": true
           },
           "duration-type": {
             "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "description": "The type of podcast format.",
             "nullable": true
           },
           "feed-url": {
             "type": "string",
+            "description": "The URL of the podcast feed.",
             "nullable": true
           },
           "image-url": {
             "type": "string",
+            "description": "Cover image of the podcast.",
             "nullable": true
           },
           "url": {
             "type": "string",
-            "nullable": true
+            "description": "URL location where more information can be found.",
+            "nullable": false
           },
           "degreed-url": {
             "type": "string",
@@ -10186,10 +8870,12 @@
           },
           "author": {
             "type": "string",
+            "description": "The creator of the podcast.",
             "nullable": true
           },
           "language": {
             "type": "string",
+            "description": "Spoken language of the podcast.",
             "nullable": true
           },
           "owner": {
@@ -10368,7 +9054,7 @@
             "type": "string",
             "nullable": true
           },
-          "organizationId": {
+          "organization-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
@@ -10378,46 +9064,58 @@
             "format": "int64",
             "nullable": true
           },
-          "providerId": {
+          "provider-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
           },
-          "userId": {
+          "user-id": {
             "type": "string",
-            "nullable": true
+            "description": "The unique ID of the user who completed it.",
+            "nullable": false
           },
-          "userIdentifierType": {
+          "user-identifier-type": {
             "type": "string",
-            "nullable": true
+            "description": "Can be any of `UserId`, `Email`, `EmployeeId`, `AliasUid`, or `AliasEmail`.",
+            "nullable": false
           },
-          "contentId": {
+          "content-id": {
             "type": "string",
-            "nullable": true
+            "description": "Unique ID identifying the content.",
+            "nullable": false
           },
-          "contentIdType": {
+          "content-id-type": {
             "type": "string",
-            "nullable": true
+            "description": "Can be any of `ExternalId`, `Id`, or `ContentUrl`.",
+            "nullable": false
           },
           "content-type": {
             "type": "string",
             "nullable": true
           },
-          "completedAt": {
+          "completed-at": {
             "type": "string",
-            "format": "date-time"
+            "description": "Date when the completion was created (For a `Task` the server sets `completed-at` date and it cannot be overriden.)",
+            "format": "date-time",
+            "nullable": false
           },
-          "isVerified": {
+          "is-verified": {
             "type": "boolean",
-            "nullable": true
+            "description": "The completion is verified.",
+            "nullable": false,
+            "default": true
           },
-          "questionsCorrect": {
+          "questions-correct": {
             "type": "integer",
-            "format": "int32"
+            "description": "Specific to `Assessments`. Number of questions answered correctly.",
+            "format": "int32",
+            "default": 0
           },
           "percentile": {
             "type": "number",
-            "format": "double"
+            "description": "Specific to `Assessments`. The user's percentile.",
+            "format": "double",
+            "default": 0
           },
           "duration": {
             "type": "number",
@@ -11366,6 +10064,7 @@
           },
           "visibilityGroups": {
             "type": "array",
+            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/GroupRelationship"
@@ -11373,7 +10072,8 @@
           },
           "external-id": {
             "type": "string",
-            "nullable": true
+            "description": "The external ID of the video.",
+            "nullable": false
           },
           "serializeVisibilityGroups": {
             "type": "boolean"
@@ -11398,38 +10098,46 @@
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "description": "The title of the video.",
+            "nullable": false
           },
           "summary": {
             "type": "string",
+            "description": "Short summary of the video.",
             "nullable": true
           },
           "url": {
             "type": "string",
-            "nullable": true
+            "description": "URL location where more information can be found.",
+            "nullable": false
           },
           "degreed-url": {
             "type": "string",
             "nullable": true
           },
           "obsolete": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If the video should be marked as obsolete."
           },
           "image-url": {
             "type": "string",
+            "description": "Cover image of the video.",
             "nullable": true
           },
           "language": {
             "type": "string",
+            "description": "Spoken language of the video.",
             "nullable": true
           },
           "duration": {
             "type": "number",
-            "format": "double",
+            "description": "Length of the video. Type is supplied with `duration-type`.",
+            "format": "integer",
             "nullable": true
           },
           "duration-type": {
             "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
             "nullable": true
           },
           "owner": {
@@ -11438,6 +10146,7 @@
           },
           "publish-date": {
             "type": "string",
+            "description": "Date that the video was published.",
             "format": "date-time",
             "nullable": true
           },
