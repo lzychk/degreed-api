@@ -4703,6 +4703,7 @@
         "tags": [
           "User"
         ],
+        "description": "This endpoint retrieves all completions for a specific user. <br><br>For Global Admin Tool Organizations, if the user belongs to a Tenant Organization, then the `X-Degreed-Organization-Code` header must be provided.<h2>Required Scope</h2>`read`, `users:write`, `completions:read` or `completions:write`",
         "parameters": [
           {
             "name": "limit",
@@ -4718,6 +4719,7 @@
           {
             "name": "id",
             "in": "path",
+            "description": "The ID of the user to retrieve.",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -4728,6 +4730,7 @@
           {
             "name": "identifier",
             "in": "query",
+            "description": "How to identify the user. Can be any of `id` (default), `employee-id`, or `email`.",
             "required": false,
             "style": "form",
             "explode": true,
@@ -7532,8 +7535,9 @@
             "type": "string",
             "nullable": true
           },
-          "contentId": {
+          "content-id": {
             "type": "string",
+            "description": "The ID of the content to retrieve.",
             "nullable": true
           },
           "content-type": {
@@ -7544,56 +7548,56 @@
             "type": "string",
             "nullable": true
           },
-          "contentTitle": {
+          "content-title": {
             "type": "string",
             "nullable": true
           },
-          "contentDuration": {
+          "content-duration": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "contentDurationType": {
+          "content-duration-type": {
             "type": "string",
             "nullable": true
           },
           "is-internal": {
             "type": "boolean"
           },
-          "contentProvider": {
+          "content-provider": {
             "type": "string",
             "nullable": true
           },
-          "userId": {
+          "user-id": {
             "type": "string",
             "nullable": true
           },
-          "employeeId": {
+          "employee-id": {
             "type": "string",
             "nullable": true
           },
-          "completedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "addedAt": {
+          "completed-at": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "pointsEarned": {
+          "added-at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "points-earned": {
             "type": "string",
             "nullable": true
           },
-          "isVerified": {
+          "is-verified": {
             "type": "boolean"
           },
           "rating": {
             "type": "integer",
             "format": "int32"
           },
-          "questionsCorrect": {
+          "questions-correct": {
             "type": "integer",
             "format": "int32"
           },
@@ -7601,16 +7605,16 @@
             "type": "number",
             "format": "double"
           },
-          "accessMethod": {
+          "access-method": {
             "type": "string",
             "nullable": true
           },
-          "userOrganizationId": {
+          "user-organization-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
           },
-          "contentOrganizationId": {
+          "content-organization-id": {
             "type": "integer",
             "format": "int64",
             "nullable": true
@@ -9091,6 +9095,7 @@
           },
           "content-type": {
             "type": "string",
+            "description": "Can be any of `Article`, `Book`, `Course`, `Event`, `Podcast`, `Task`, `Video` or `Assessment`.",
             "nullable": true
           },
           "completed-at": {
