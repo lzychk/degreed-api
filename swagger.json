@@ -696,7 +696,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostedCompletion"
+                "$ref": "#/components/schemas/v2_completions_body"
               }
             }
           }
@@ -800,7 +800,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostedCompletion"
+                "$ref": "#/components/schemas/completions_id_body"
               }
             }
           }
@@ -1060,7 +1060,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Book"
+                "$ref": "#/components/schemas/content_books_body"
               }
             }
           }
@@ -1164,7 +1164,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Book"
+                "$ref": "#/components/schemas/books_id_body"
               }
             }
           }
@@ -1436,7 +1436,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Video"
+                "$ref": "#/components/schemas/content_videos_body"
               }
             }
           }
@@ -1540,7 +1540,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Video"
+                "$ref": "#/components/schemas/videos_id_body"
               }
             }
           }
@@ -1811,7 +1811,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Course"
+                "$ref": "#/components/schemas/content_courses_body"
               }
             }
           }
@@ -1914,7 +1914,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Course"
+                "$ref": "#/components/schemas/courses_id_body"
               }
             }
           }
@@ -2047,7 +2047,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Podcast"
+                "$ref": "#/components/schemas/content_podcasts_body"
               }
             }
           }
@@ -2151,7 +2151,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Podcast"
+                "$ref": "#/components/schemas/podcasts_id_body"
               }
             }
           }
@@ -2284,7 +2284,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Assessment"
+                "$ref": "#/components/schemas/content_assessments_body"
               }
             }
           }
@@ -2388,7 +2388,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Assessment"
+                "$ref": "#/components/schemas/assessments_id_body"
               }
             }
           }
@@ -5911,12 +5911,6 @@
         "additionalProperties": false
       },
       "Assessment": {
-        "required": [
-          "external-id",
-          "num-questions",
-          "title",
-          "url"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -6079,10 +6073,6 @@
         "additionalProperties": false
       },
       "Book": {
-        "required": [
-          "external-id",
-          "title"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -6336,13 +6326,6 @@
         ]
       },
       "Course": {
-        "required": [
-          "duration",
-          "duration-type",
-          "external-id",
-          "title",
-          "url"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -8782,12 +8765,6 @@
         "additionalProperties": false
       },
       "Podcast": {
-        "required": [
-          "duration",
-          "duration-type",
-          "external-id",
-          "title"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -10080,12 +10057,6 @@
         "additionalProperties": false
       },
       "Video": {
-        "required": [
-          "duration",
-          "duration-type",
-          "external-id",
-          "title"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -10104,7 +10075,7 @@
             "format": "int32",
             "readOnly": true
           },
-          "visibilityGroups": {
+          "visibility-groups": {
             "type": "array",
             "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
             "nullable": true,
@@ -10202,6 +10173,891 @@
           }
         },
         "additionalProperties": false
+      },
+      "v2_completions_body": {
+        "required": [
+          "completed-at",
+          "content-id",
+          "content-id-type",
+          "content-type",
+          "user-id",
+          "user-identifier-type"
+        ],
+        "type": "object",
+        "properties": {
+          "user-id": {
+            "type": "string",
+            "description": "The unique ID of the user who completed it."
+          },
+          "user-identifier-type": {
+            "type": "string",
+            "description": "Can be any of `UserId`, `Email`, `EmployeeId`, `AliasUid`, or `AliasEmail`.",
+            "nullable": false
+          },
+          "content-id": {
+            "type": "string",
+            "description": "Unique ID identifying the content.",
+            "nullable": false
+          },
+          "content-id-type": {
+            "type": "string",
+            "description": "Can be any of `ExternalId`, `Id`, or `ContentUrl`.",
+            "nullable": false
+          },
+          "content-type": {
+            "type": "string",
+            "description": "Can be any of `Article`, `Book`, `Course`, `Event`, `Podcast`, `Task`, `Video` or `Assessment`.",
+            "nullable": true
+          },
+          "completed-at": {
+            "type": "string",
+            "description": "Date when the completion was created (For a `Task` the server sets `completed-at` date and it cannot be overriden.)",
+            "format": "date-time",
+            "nullable": false
+          },
+          "is-verified": {
+            "type": "boolean",
+            "description": "The completion is verified.",
+            "nullable": false,
+            "default": true
+          },
+          "questions-correct": {
+            "type": "integer",
+            "description": "Specific to `Assessments`. Number of questions answered correctly.",
+            "format": "int32",
+            "default": 0
+          },
+          "percentile": {
+            "type": "number",
+            "description": "Specific to `Assessments`. The user's percentile.",
+            "format": "double",
+            "default": 0
+          }
+        }
+      },
+      "completions_id_body": {
+        "required": [
+          "completed-at",
+          "content-id",
+          "content-id-type",
+          "content-type",
+          "user-id",
+          "user-identifier-type"
+        ],
+        "type": "object",
+        "properties": {
+          "user-id": {
+            "type": "string",
+            "description": "The unique ID of the user who completed it."
+          },
+          "user-identifier-type": {
+            "type": "string",
+            "description": "Can be any of `UserId`, `Email`, `EmployeeId`, `AliasUid`, or `AliasEmail`.",
+            "nullable": false
+          },
+          "content-id": {
+            "type": "string",
+            "description": "Unique ID identifying the content.",
+            "nullable": false
+          },
+          "content-id-type": {
+            "type": "string",
+            "description": "Can be any of `ExternalId`, `Id`, or `ContentUrl`.",
+            "nullable": false
+          },
+          "content-type": {
+            "type": "string",
+            "description": "Can be any of `Article`, `Book`, `Course`, `Event`, `Podcast`, `Task`, `Video` or `Assessment`.",
+            "nullable": true
+          },
+          "completed-at": {
+            "type": "string",
+            "description": "Date when the completion was created (For a `Task` the server sets `completed-at` date and it cannot be overriden.)",
+            "format": "date-time",
+            "nullable": false
+          },
+          "is-verified": {
+            "type": "boolean",
+            "description": "The completion is verified.",
+            "nullable": false,
+            "default": true
+          },
+          "questions-correct": {
+            "type": "integer",
+            "description": "Specific to `Assessments`. Number of questions answered correctly.",
+            "format": "int32",
+            "default": 0
+          },
+          "percentile": {
+            "type": "number",
+            "description": "Specific to `Assessments`. The user's percentile.",
+            "format": "double",
+            "default": 0
+          }
+        }
+      },
+      "content_books_body": {
+        "required": [
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "External ID of the book. This is usually the URL where the book can be found.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the book.",
+            "nullable": false
+          },
+          "subtitle": {
+            "type": "string",
+            "description": "The subtitle of the book.",
+            "nullable": true
+          },
+          "authors": {
+            "type": "string",
+            "description": "Comma delimited list of authors.",
+            "nullable": true
+          },
+          "pages": {
+            "type": "integer",
+            "description": "Number of pages.",
+            "format": "int32",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the book.",
+            "nullable": true
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the book.",
+            "nullable": true
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the book should be marked as obsolete."
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the book was published.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the book.",
+            "nullable": true
+          },
+          "i-s-b-n-13": {
+            "type": "string",
+            "description": "ISBN13 number of the book.",
+            "nullable": true
+          }
+        }
+      },
+      "books_id_body": {
+        "required": [
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "External ID of the book. This is usually the URL where the book can be found.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the book.",
+            "nullable": false
+          },
+          "subtitle": {
+            "type": "string",
+            "description": "The subtitle of the book.",
+            "nullable": true
+          },
+          "authors": {
+            "type": "string",
+            "description": "Comma delimited list of authors.",
+            "nullable": true
+          },
+          "pages": {
+            "type": "integer",
+            "description": "Number of pages.",
+            "format": "int32",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the book.",
+            "nullable": true
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the book.",
+            "nullable": true
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the book should be marked as obsolete."
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the book was published.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the book.",
+            "nullable": true
+          },
+          "i-s-b-n-13": {
+            "type": "string",
+            "description": "ISBN13 number of the book.",
+            "nullable": true
+          }
+        }
+      },
+      "content_videos_body": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the video.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the video.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the video.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the video should be marked as obsolete."
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the video.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the video.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the video. Type is supplied with `duration-type`.",
+            "format": "integer",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the video was published.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "visibility-groups": {
+            "type": "array",
+            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be `groups`.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GroupRelationship"
+            }
+          }
+        }
+      },
+      "videos_id_body": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the video.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the video.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the video should be marked as obsolete."
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the video.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the video.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the video. Type is supplied with `duration-type`.",
+            "format": "integer",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the video was published.",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "content_courses_body": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "visibilityGroups": {
+            "type": "array",
+            "description": "The relationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GroupRelationship"
+            }
+          },
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the course.",
+            "nullable": false
+          },
+          "organization-id": {
+            "type": "integer",
+            "description": "The ID of the organization.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-id": {
+            "type": "integer",
+            "description": "The ID of the provider.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the course.",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the course.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the course should be marked as obsolete."
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the course.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the course.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the course. Type is supplied with `duration-type`.",
+            "format": "double",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "cost-units": {
+            "type": "number",
+            "description": "Units for the cost.",
+            "format": "double",
+            "nullable": true
+          },
+          "cost-unit-type": {
+            "type": "string",
+            "description": "The cost unit type can be any currency",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "description": "Format of the course. Possible values include `Virtual Classroom`, `Accredited`, `Instructor Led Training`, and `Online`.",
+            "nullable": true
+          },
+          "difficulty": {
+            "type": "string",
+            "description": "Describes the difficulty level of the course.",
+            "nullable": true
+          },
+          "video-url": {
+            "type": "string",
+            "description": "If the course has a video, supply the URL where the video can be accessed.",
+            "nullable": true
+          }
+        }
+      },
+      "courses_id_body": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the course.",
+            "nullable": false
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the course.",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the course.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the course should be marked as obsolete."
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the course.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the course.",
+            "nullable": true
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the course. Type is supplied with `duration-type`.",
+            "format": "double",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "cost-units": {
+            "type": "number",
+            "description": "Units for the cost.",
+            "format": "double",
+            "nullable": true
+          },
+          "cost-unit-type": {
+            "type": "string",
+            "description": "The cost unit type can be any currency",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "description": "Format of the course. Possible values include `Virtual Classroom`, `Accredited`, `Instructor Led Training`, and `Online`.",
+            "nullable": true
+          },
+          "difficulty": {
+            "type": "string",
+            "description": "Describes the difficulty level of the course.",
+            "nullable": true
+          },
+          "video-url": {
+            "type": "string",
+            "description": "If the course has a video, supply the URL where the video can be accessed.",
+            "nullable": true
+          }
+        }
+      },
+      "content_podcasts_body": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the podcast.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the podcast.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the podcast.",
+            "nullable": true
+          },
+          "organization-id": {
+            "type": "string",
+            "description": "The ID of the organization.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-id": {
+            "type": "integer",
+            "description": "The ID of the provider.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the podcast should be marked as obsolete."
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the podcast. Type is supplied with duration-type.",
+            "format": "double",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "description": "The type of podcast format.",
+            "nullable": true
+          },
+          "feed-url": {
+            "type": "string",
+            "description": "The URL of the podcast feed.",
+            "nullable": true
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the podcast.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "author": {
+            "type": "string",
+            "description": "The creator of the podcast.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the podcast.",
+            "nullable": true
+          }
+        }
+      },
+      "podcasts_id_body": {
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the podcast.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the podcast.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the podcast.",
+            "nullable": true
+          },
+          "organization-id": {
+            "type": "string",
+            "description": "The ID of the organization.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-id": {
+            "type": "integer",
+            "description": "The ID of the provider.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "obsolete": {
+            "type": "boolean",
+            "description": "If the podcast should be marked as obsolete."
+          },
+          "duration": {
+            "type": "number",
+            "description": "Length of the podcast. Type is supplied with duration-type.",
+            "format": "double",
+            "nullable": true
+          },
+          "duration-type": {
+            "type": "string",
+            "description": "Seconds, minutes, hours, or days.",
+            "nullable": true
+          },
+          "format": {
+            "type": "string",
+            "description": "The type of podcast format.",
+            "nullable": true
+          },
+          "feed-url": {
+            "type": "string",
+            "description": "The URL of the podcast feed.",
+            "nullable": true
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the podcast.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "author": {
+            "type": "string",
+            "description": "The creator of the podcast.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "Spoken language of the podcast.",
+            "nullable": true
+          }
+        }
+      },
+      "content_assessments_body": {
+        "required": [
+          "external-id",
+          "num-questions",
+          "title",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the assessment.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the assessment.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the assessment.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the assessment.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "The language of the assessment.",
+            "nullable": true
+          },
+          "num-questions": {
+            "type": "integer",
+            "description": "The number of words in the assessment.",
+            "format": "int32",
+            "nullable": false
+          },
+          "organization-id": {
+            "type": "integer",
+            "description": "The ID of the organization.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-id": {
+            "type": "string",
+            "description": "The ID of the provider.",
+            "nullable": true
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the assessment was published.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "visibilityGroups": {
+            "type": "array",
+            "description": "The realationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GroupRelationship"
+            }
+          }
+        }
+      },
+      "assessments_id_body": {
+        "type": "object",
+        "properties": {
+          "external-id": {
+            "type": "string",
+            "description": "The external ID of the assessment.",
+            "nullable": false
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the assessment.",
+            "nullable": false
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary of the assessment.",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL location where more information can be found.",
+            "nullable": false
+          },
+          "image-url": {
+            "type": "string",
+            "description": "Cover image of the assessment.",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "description": "The language of the assessment.",
+            "nullable": true
+          },
+          "num-questions": {
+            "type": "integer",
+            "description": "The number of words in the assessment.",
+            "format": "int32",
+            "nullable": false
+          },
+          "organization-id": {
+            "type": "integer",
+            "description": "The ID of the organization.",
+            "format": "int64",
+            "nullable": true
+          },
+          "provider-id": {
+            "type": "string",
+            "description": "The ID of the provider.",
+            "nullable": true
+          },
+          "provider-code": {
+            "type": "string",
+            "description": "Unique provider code.",
+            "nullable": true
+          },
+          "publish-date": {
+            "type": "string",
+            "description": "Date that the assessment was published.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "visibilityGroups": {
+            "type": "array",
+            "description": "The realationship `id` of the relationship object must be the id of the visibility group and the type of the relationship must be groups.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/GroupRelationship"
+            }
+          }
+        }
       }
     }
   }
