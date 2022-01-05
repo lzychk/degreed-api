@@ -5911,6 +5911,12 @@
         "additionalProperties": false
       },
       "Assessment": {
+        "required": [
+          "external-id",
+          "num-questions",
+          "title",
+          "url"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -6073,6 +6079,10 @@
         "additionalProperties": false
       },
       "Book": {
+        "required": [
+          "external-id",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -6326,6 +6336,13 @@
         ]
       },
       "Course": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title",
+          "url"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -8765,6 +8782,12 @@
         "additionalProperties": false
       },
       "Podcast": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -9036,6 +9059,14 @@
         "additionalProperties": false
       },
       "PostedCompletion": {
+        "required": [
+          "completed-at",
+          "content-id",
+          "content-id-type",
+          "content-type",
+          "user-id",
+          "user-identifier-type"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -10049,6 +10080,12 @@
         "additionalProperties": false
       },
       "Video": {
+        "required": [
+          "duration",
+          "duration-type",
+          "external-id",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
