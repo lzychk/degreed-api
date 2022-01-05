@@ -9036,14 +9036,6 @@
         "additionalProperties": false
       },
       "PostedCompletion": {
-        "required": [
-          "completed-at",
-          "content-id",
-          "content-id-type",
-          "content-type",
-          "user-id",
-          "user-identifier-type"
-        ],
         "type": "object",
         "properties": {
           "id": {
