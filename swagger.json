@@ -6,7 +6,12 @@
   },
   "servers": [
     {
-      "url": "/"
+      "url": "https://api.staging.degreed.com"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
     }
   ],
   "paths": {
@@ -11050,6 +11055,12 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
